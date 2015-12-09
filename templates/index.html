@@ -1,0 +1,34 @@
+<!doctype html>
+
+<!-- Yes I'm including all of Bootstrap for a dropdown menu. I know. -->
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+<form id="regex" class="form-inline" role="form" method="post" action="/regex">
+    Help! I need to know if a
+    <select class="form-control" name="base">
+        <option value="b">binary</option>
+        <option value="d">decimal</option>
+        <option value="h">hexadecimal</option>
+    </select>
+    number is divisible by
+    <select class="form-control" name="divisor">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+    </select>
+    !
+    <br>
+    <button type="submit" class="btn btn-primary">DECIDE</button>
+</form>
+
