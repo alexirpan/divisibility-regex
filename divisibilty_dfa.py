@@ -1,5 +1,5 @@
 """ Constructs a DFA to test for divisibility by a given number. """
-import re
+import random
 
 class DFA(object):
     """ Represents a DFA.
@@ -104,6 +104,10 @@ def dfa_to_regex(dfa, accept):
     equations = [dfa.equation(i, i == accept) for i in xrange(N)]
     # TODO change when this supports multiple accept states
     to_substitute = set(xrange(N)) - set([accept])
+    # Don't know how to minimize final length, so eliminate in
+    # random order
+    to_substitute = list(to_substitute)
+    random.shuffle(to_substitute)
 
     for state in to_substitute:
         # Replace the self loop
