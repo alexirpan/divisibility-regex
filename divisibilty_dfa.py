@@ -12,46 +12,45 @@ class DFA(object):
         # The states are represented implicitly by a number label
         self.num_states = num_states
 
-        # Store edges in both directions, to easily fetch the
-        # edges both entering and exiting a state
-        # start -> a dictionary mapping label -> end
-        self.edges = dict()
-        # end -> a dictionary mapping label -> start
-        self.reverse_edges = dict()
+        self.adj_mat = [
+            [list() for _ in xrange(num_states)]
+            for _ in xrange(num_states)
+        ]
+        self.rev_mat = [
+            [list() for _ in xrange(num_states)]
+            for _ in xrange(num_states)
+        ]
         self.start_state = 0
 
     def set_start(self, st):
         self.start_state = st
 
     def add_edge(self, start, end, label):
-        if start not in self.edges:
-            self.edges[start] = dict()
-        self.edges[start][label] = end
-        if end not in self.reverse_edges:
-            self.reverse_edges[end] = dict()
-        self.reverse_edges[end][label] = start
+        self.adj_mat[start][end].append(label)
+        self.rev_mat[end][start].append(label)
 
     def equation(self, state, is_accept):
         """ An equations is of the form
-            R_i = regex R_1 + regex R_2 + ... + regex R_n + regex
+            R_i = R_1 regex + R_2 regex + ... + R_n regex + regex
         Represent it as the list
             (regex_1, regex_2, ...)
         where regex_i is None if it does not appear in the term
         """
         equation = [None] * (self.num_states + 1)
-        edges = self.edges[state]
+        # Get all edges that end in the given state
+        edges = self.rev_mat[state]
 
         # The DFA can have multiedges so we need to check for it here
-        for label, end in edges.items():
-            if equation[end] is None:
-                equation[end] = label
-            else:
-                equation[end] += '|' + label
         for i in xrange(self.num_states):
-            if equation[i] is not None and len(equation[i]) > 1:
+            incoming = edges[i]
+            if not incoming:
+                continue
+            equation[i] = '|'.join(incoming)
+        for i in xrange(self.num_states):
+            if equation[i] is not None and '|' in equation[i]:
                 equation[i] = '(%s)' % equation[i]
         # Handle accept states correctly
-        if is_accept:
+        if state == self.start_state:
             equation[-1] = ''
         return equation
 
@@ -118,7 +117,7 @@ def dfa_to_regex(dfa, accept):
             for i in xrange(N+1):
                 label2 = equations[state][i]
                 if label2 is not None:
-                    equations[state][i] = '(%s)*%s' % (self_label, label2)
+                    equations[state][i] = '%s(%s)*' % (label2, self_label)
 
         # Substitute
         replaced_with = equations[state]
@@ -127,7 +126,7 @@ def dfa_to_regex(dfa, accept):
             if eqn[state] is None:
                 continue
             coeff = eqn[state]
-            terms = [coeff + replaced_with[i] if replaced_with[i] is not None else None for i in xrange(N+1)]
+            terms = [replaced_with[i] + coeff if replaced_with[i] is not None else None for i in xrange(N+1)]
             # Set to zero before substitution
             eqn[state] = None
             for in_eqn_i in xrange(N+1):
@@ -143,20 +142,19 @@ def dfa_to_regex(dfa, accept):
         equations[state] = [None] * (N+1)
     # Two coefficients should be left, the self loop and the constant
     assert equations[accept].count(None) == N-1, 'Not all substitutions carried through correctly'
-    print equations[accept]
-    return '^(%s)*%s$' % (equations[accept][accept], equations[accept][-1])
+    return '^%s(%s)*$' % (equations[accept][-1], equations[accept][accept])
 
 
 if __name__ == '__main__':
+    f = open('regex', 'w')
     for d in range(2, 10):
         dfa = build_dfa(d)
         dfa.set_start(d)
         reg = dfa_to_regex(dfa, 0)
         print d, len(reg)
-        print reg
+        """
         assert re.match(reg, '') is None, 'matches empty string'
-        for i in range(0, 1000*d):
-            import re
+        for i in range(0, 5000 * d):
             m = re.match(reg, str(i))
             assert (m is None if i % d != 0 else m is not None), '%d %d' % (d, i)
-
+        """
