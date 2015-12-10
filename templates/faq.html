@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <title>Divisibility Regex</title>
+    </head>
+    <body>
+    <div style="max-width:740px; margin-right:auto; margin-left:auto;">
+    <h2 id="faq">FAQ</h2>
+
+<p><strong>Does this actually work?</strong></p>
+
+<p>I sure hope it does! Based on my testing, it seems correct. You’re welcome
+to test on your own, but use something like grep or egrep
+that resolves regexes in linear time, instead of Python or Java which
+resolve in up to exponential time.</p>
+
+<p><strong>How does this work?</strong></p>
+
+<p>This constructs a discrete finite automaton (DFA) that accepts a string if and only if
+it is divisible by a given number. Then, that DFA is converted to a regular
+expression.</p>
+
+<p>I used the Brzozowski Algebraic Method to do this, although several other approaches
+exist.</p>
+
+<p><strong>Why are these regular expressions so long?</strong></p>
+
+<p>The Brzozowski method is guaranteed to return an equivalent regular expression.
+It is not guaranteed to return a short one. In fact, finding the minimal
+regular expression that matches a language (set of strings) is PSPACE-Complete,
+and the minimal regular expression for a DFA with n states may be exponential
+in n.</p>
+
+<p>That being said, I optimized for correctness instead of length, so there
+are lots of extra parantheses.</p>
+
+<p><strong>Why does this only check divisibility up to 9?</strong></p>
+
+<p>In principle, this algorithm works on any DFA, and can output regular
+expressions that check divisibility by larger numbers. However, the length
+grows exponentially in the number of states. Dividing by anything past
+around 15 takes too long.</p>
+
+    <a href="/">Back</a>
+    </div>
+    </body>
+</html>

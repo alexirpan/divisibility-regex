@@ -8,6 +8,10 @@ app = Flask(__name__)
 def homepage():
     return render_template('index.html')
 
+@app.route('/faq')
+def faq():
+    return render_template('faq.html')
+
 
 @app.route('/regex', methods=['POST'])
 def generate_regex():
