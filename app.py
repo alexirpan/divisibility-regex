@@ -23,7 +23,7 @@ def generate_regex():
         return 'Invalid divisor'
 
     div = int(div)
-    dfa = divisibility_dfa.build_dfa(div)
+    dfa = divisibility_dfa.build_dfa(base, div)
     dfa.set_start(div)
     return render_template(
         'regex.html',

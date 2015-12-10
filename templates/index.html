@@ -1,37 +1,40 @@
 <!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Yes I'm including all of Bootstrap for a dropdown menu. I know. -->
-
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
-<div class="text-center">
-<form id="regex" class="form-inline" role="form" method="post" action="/regex">
-    <h1>Help! I need to know if a
-    <select class="form-control" name="base">
-        <option value="binary">binary</option>
-        <option value="decimal">decimal</option>
-        <option value="hexadecimal">hexadecimal</option>
-    </select>
-    number is divisible by
-    <select class="form-control" name="divisor">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-    </select>
-    !
-    </h1>
-    <br>
-    <button type="submit" class="btn btn-primary btn-lg">PLEASE ADVISE</button>
-</form>
-</div>
-
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <title>Divisibility Regex</title>
+    </head>
+    <body>
+        <div class="text-center">
+        <form id="regex" class="form-inline" role="form" method="post" action="/regex">
+            <h1>Help! I need to know if a
+            <select class="form-control" name="base">
+                <option value="binary">binary</option>
+                <option value="decimal">decimal</option>
+                <option value="hexadecimal">hexadecimal</option>
+            </select>
+            number is divisible by
+            <select class="form-control" name="divisor">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+            </select>
+            !
+            </h1>
+            <br>
+            <button type="submit" class="btn btn-primary btn-lg">PLEASE ADVISE</button>
+        </form>
+        </div>
+    </body>
+</html>

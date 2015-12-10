@@ -55,37 +55,46 @@ class DFA(object):
         return equation
 
 
-def build_dfa(d):
+def build_dfa(b, d):
     """
+    b: binary, decimal, or hexadecimal
     d: The divisor to test by.
 
     Returns a DFA that accepts iff the given input is a valid
     base 10 number divisble by d.
     """
-    # The DFA has d + 2 states
-    # Start state: checks that input is non-empty
+    # The DFA has d + 1 states
+    # Start state: checks that input is non-empty.
     # d states: represent number == i mod d. State 0 is an accept state
-    # Failure state: Go to force failure
     # Every state goes to the failing state if it doesn't get a digit
-
-    dfa = DFA(d + 2)
+    assert b in ('binary', 'decimal', 'hexadecimal'), 'Invalid base'
+    dfa = DFA(d + 1)
     dfa.set_start(d)
-    digits = range(10)
+
+    if b == 'binary':
+        digits = ('0', '1')
+        base = 2
+    elif b == 'decimal':
+        digits = [str(i) for i in range(10)]
+        base = 10
+    elif b == 'hexadecimal':
+        digits = [str(i) for i in range(10)] + ['A', 'B', 'C', 'D', 'E', 'F']
+        base = 16
+    else:
+        # Do error checking if I wasn't lazy
+        pass
 
     # Start state
     for digit in digits:
-        dfa.add_edge(d, digit % d, '%d' % digit)
+        val = int(digit, 16)
+        dfa.add_edge(d, val % d, '%s' % digit)
 
     # The d intermediates
     # On seeing a new digit 0-9, multiply by 10 and add the digit
     for i in xrange(d):
-        for digit in range(10):
-            dfa.add_edge(i, (10 * i + digit) % d, str(digit))
-
-    # The failure state
-    dfa.add_edge(d+1, d+1, '.')
-    for i in xrange(d+1):
-        dfa.add_edge(i, d+1, '[^0-9]')
+        for digit in digits:
+            val = int(digit, 16)
+            dfa.add_edge(i, (base * i + val) % d, digit)
 
     return dfa
 
@@ -150,15 +159,23 @@ def dfa_to_regex(dfa, accept):
 
 
 if __name__ == '__main__':
-    f = open('regex', 'w')
-    for d in range(2, 10):
-        dfa = build_dfa(d)
-        dfa.set_start(d)
-        reg = dfa_to_regex(dfa, 0)
-        print d, len(reg)
-        """
-        assert re.match(reg, '') is None, 'matches empty string'
-        for i in range(0, 5000 * d):
-            m = re.match(reg, str(i))
-            assert (m is None if i % d != 0 else m is not None), '%d %d' % (d, i)
-        """
+    # Some tests
+    # Not comprehensive because Python can't handle the bigger regexes (lol)
+    import re
+    for b in ('binary', 'decimal', 'hexadecimal'):
+        for d in range(2, 4):
+            dfa = build_dfa(b, d)
+            reg = dfa_to_regex(dfa, 0)
+            print b, d, len(reg)
+            print reg
+
+            assert re.match(reg, '') is None, 'matches empty string'
+            for i in range(0, 5000 * d):
+                if b == 'binary':
+                    s = bin(i)[2:]
+                elif b == 'hexadecimal':
+                    s = hex(i)[2:].upper()
+                else:
+                    s = str(i)
+                m = re.match(reg, s)
+                assert (m is None if i % d != 0 else m is not None), '%d %d' % (d, i)
