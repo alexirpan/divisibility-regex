@@ -12,40 +12,39 @@
     <body>
     <div style="max-width:740px; margin-right:auto; margin-left:auto;">
     <h2 id="faq">FAQ</h2>
-
 <p><strong>Does this actually work?</strong></p>
 
 <p>I sure hope it does! Based on my testing, it seems correct. You’re welcome
-to test on your own, but use something like grep or egrep
-that resolves regexes in linear time, instead of Python or Java which
-resolve in up to exponential time.</p>
+to test on your own, but use something like
+<a href="https://swtch.com/~rsc/regexp/regexp1.html">grep or awk, instead of Python or Java</a>.</p>
 
 <p><strong>How does this work?</strong></p>
 
-<p>This constructs a discrete finite automaton (DFA) that accepts a string if and only if
+<p>This constructs a <a href="https://en.wikipedia.org/wiki/Deterministic_finite_automaton">discrete finite automaton (DFA)</a>
+that accepts a string if and only if
 it is divisible by a given number. Then, that DFA is converted to a regular
 expression.</p>
 
-<p>I used the Brzozowski Algebraic Method to do this, although several other approaches
+<p>I used the <a href="https://michaellevet.wordpress.com/2015/04/22/automata-theory-brzozowski-algebraic-method/">Brzozowski Algebraic Method</a>
+to do this, although several other approaches
 exist.</p>
 
 <p><strong>Why are these regular expressions so long?</strong></p>
 
 <p>The Brzozowski method is guaranteed to return an equivalent regular expression.
 It is not guaranteed to return a short one. In fact, finding the minimal
-regular expression that matches a language (set of strings) is PSPACE-Complete,
-and the minimal regular expression for a DFA with n states may be exponential
-in n.</p>
+regular expression that matches a language (set of strings) is
+<a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.60.5056&amp;rep=rep1&amp;type=pdf">PSPACE-Complete</a>.</p>
 
 <p>That being said, I optimized for correctness instead of length, so there
-are lots of extra parantheses.</p>
+are lots of extra parantheses floating around.</p>
 
 <p><strong>Why does this only check divisibility up to 9?</strong></p>
 
 <p>In principle, this algorithm works on any DFA, and can output regular
 expressions that check divisibility by larger numbers. However, the length
 grows exponentially in the number of states. Dividing by anything past
-around 15 takes too long.</p>
+around 15 starts hitting memory limits.</p>
 
     <a href="/">Back</a>
     </div>
