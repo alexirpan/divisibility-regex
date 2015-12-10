@@ -14,15 +14,21 @@ def generate_regex():
     form = request.form
     if 'base' not in form or 'divisor' not in form:
         return 'Missing form fields'
-    if form['base'] not in ('b', 'd', 'h'):
+
+    base = form['base']
+    div = form['divisor']
+    if base not in ('binary', 'decimal', 'hexadecimal'):
         return 'Invalid base'
-    if form['divisor'] not in [str(i) for i in range(1,10)]:
+    if div not in [str(i) for i in range(1,10)]:
         return 'Invalid divisor'
 
-    div = int(form['divisor'])
+    div = int(div)
     dfa = divisibility_dfa.build_dfa(div)
     dfa.set_start(div)
-    return divisibility_dfa.dfa_to_regex(dfa, 0)
+    return render_template(
+        'regex.html',
+        regex=divisibility_dfa.dfa_to_regex(dfa, 0),
+    )
 
 
 import os
